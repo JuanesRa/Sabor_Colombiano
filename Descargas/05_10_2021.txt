@@ -1,0 +1,18 @@
+PROGRAMA QUE MUESTRA LAS TABLAS DE UN CUADERNO UTILIZANDO (MIENTRAS QUE) Y (PARA)
+#include <stdio.h>
+#include <stdlib.h>
+
+/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+int main() {
+int j, i=1;
+while(i<=10){
+printf("\nTabla de multiplicar del %i\n",i);
+for(j=1;j<=10;j++){
+printf("%i X %i = %i \n",i,j,i*j);
+}
+i++;
+}
+system("pause");
+return 0;
+}
