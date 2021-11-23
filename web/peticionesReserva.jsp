@@ -87,12 +87,12 @@
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             //creación de objeto y llamado al metodo consultarIndividual
-            int id_reserva = Integer.parseInt(request.getParameter("id_cedula"));
+            int id_reserva = Integer.parseInt(request.getParameter("id_reserva"));
             try {
                 Reserva obj =new Reserva(id_reserva).consultarReserva();
-                respuesta += "\"" + proceso + "\": true,\"Reserva Individual\":" + new Gson().toJson(obj);
+                respuesta += "\"" + proceso + "\": true,\"ReservaIndividual\":" + new Gson().toJson(obj);
             } catch (Exception ex) {
-                respuesta += "\"" + proceso + "\": true,\" Reserva Individual\":null";
+                respuesta += "\"" + proceso + "\": true,\"ReservaIndividual\":null";
                 Logger.getLogger(Reserva.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else if (proceso.equals("actualizar")) {

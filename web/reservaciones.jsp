@@ -36,7 +36,9 @@
                         </div>
                         <div class="col-6"> 
                             <label>Id Menu</label>
-                            <input type="number" class="form-control" placeholder="id menu" ng-model="rc.id_menu">
+                            <select class="form-control" ng-model="rc.id_menu">
+                                <option ng-repeat="m in rc.Menus" value="{{m.id}}">{{m.nombre_menu}}</option>
+                            </select>                            
                         </div>
                         <div class="col-6"> 
                             <label>Dia Reserva</label>
@@ -115,7 +117,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th scope="col">Id Reserva</th>
-                                <th scope="col">Id Cedula</th>
+                                <th scope="col">Cliente</th>
                                 <th scope="col">Id Menu</th>
                                 <th scope="col">Dia Reserva</th>
                                 <th scope="col">Hora Reserva</th>
@@ -127,14 +129,14 @@
                         <tbody>
                             <tr ng-repeat="r in rc.reservas">
                                 <td>{{r.id_reserva}}</td>
-                                <td>{{r.id_cedula}}</td>
-                                <td>{{r.id_menu}}</td>
+                                <td>{{r.cliente.nom_cliente}}</td>
+                                <td>{{r.menu.nombre_menu}}</td>
                                 <td>{{r.dia_reserva}}</td>
                                 <td>{{r.hora_reserva}}</td>
                                 <td>{{r.cantidad_menu}}</td>
                                 <td>{{r.reserva_atendida}}</td>              
                                 <td>
-                                    <button type="button" class="btn btn-info" ng-click="ac.editar(a.id)">Editar</button>
+                                    <button type="button" class="btn btn-info" ng-click="rc.editar(r.id_reserva)">Editar</button>
                                 </td>
                             </tr>
 
@@ -144,11 +146,24 @@
             </div>
         </div>
         <script>
-            var app =angular.module('reservaciones',[]);
-            app.controller('reservacionesController',['$http', controlReservaciones]);
-            function controlReservaciones($http){
-                var rc=this;
+            var app = angular.module('reservaciones', []);
+            app.controller('reservacionesController', ['$http', controlReservaciones]);
+            function controlReservaciones($http) {
+                var rc = this;
                 
+                consultarMenus = function(){
+                    var parametros={
+                        proceso: 'listar'
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesMenu.jsp',
+                        params:parametros
+                    }).then(function(res){
+                        rc.Menus=res.data.Menu;
+                    });
+                };
+                consultarMenus();
                 rc.listar = function () {
                     var parametros = {
                         proceso: 'listar'
@@ -205,9 +220,9 @@
                     }).then(function (res) {
                         if (res.data.ok === true) {//verificar si el proceso existe
                             if (res.data.actualizar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                                alert('Actualizó');
                             } else {
-                                alert('No guardó');
+                                alert('No actualizó');
                             }
                         } else {
                             alert(res.data.errorMsg);
@@ -235,12 +250,27 @@
                         }
                     });
                 };
-                
-                
+                rc.editar = function (cod) {
+                    var parametros = {
+                        proceso: 'consultarIndividual',
+                        id_reserva: cod
+                    };
+                    $http({
+                        method: 'POST',
+                        url: 'peticionesReserva.jsp',
+                        params: parametros
+                    }).then(function (res) {
+                        rc.id_reserva = res.data.ReservaIndividual.id_reserva;
+                        rc.id_cedula = res.data.ReservaIndividual.id_cedula;
+                        rc.id_menu = res.data.ReservaIndividual.menu.nombre_menu.toString;//seguir con el proceso
+                        rc.dia_reserva = res.data.ReservaIndividual.dia_reserva;
+                        rc.hora_reserva = res.data.ReservaIndividual.hora_reserva;
+                        rc.cantidad_menu = res.data.ReservaIndividual.cantidad_menu;
+                        rc.reserva_atendida= res.data.ReservaIndividual.reserva_atendida;
+                    });
+                };
+
             }
-            
-            
         </script>
-        
     </body>
 </html>

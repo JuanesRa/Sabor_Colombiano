@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/CURSOS/JAVA/MisionTIC/RestauranteSaborColombiano/RestauranteSaborColombiano/web/menuCrear.jsp</file>
+            <file>file:/C:/CURSOS/Sabor_Colombiano/src/java/logica/Reserva.java</file>
+            <file>file:/C:/CURSOS/Sabor_Colombiano/web/peticionesReserva.jsp</file>
+            <file>file:/C:/CURSOS/Sabor_Colombiano/web/reservaciones.jsp</file>
+            <file>file:/C:/CURSOS/Sabor_Colombiano/web/menuCrear.jsp</file>
         </group>
     </open-files>
 </project-private>

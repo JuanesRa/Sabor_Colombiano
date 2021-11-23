@@ -27,6 +27,9 @@
             <li class="nav-item"> 
                 <a class="nav-link" href="clientes.jsp">Clientes</a>
             </li>
+            <li class="nav-item"> 
+                <a class="nav-link" href="hacerReserva.jsp">Realizar Reserva</a>
+            </li>
             
         </ul>
 

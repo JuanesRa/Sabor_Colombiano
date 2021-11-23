@@ -15,6 +15,8 @@ public class Reserva {
     private String hora_reserva;
     private int cantidad_menu;
     private boolean reserva_atendida;
+    private Menu menu;
+    private Cliente cliente;
 
     public Reserva() {
     }
@@ -31,6 +33,22 @@ public class Reserva {
         this.hora_reserva = hora_reserva;
         this.cantidad_menu = cantidad_menu;
         this.reserva_atendida = reserva_atendida;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public int getId_reserva() {
@@ -111,6 +129,10 @@ public class Reserva {
                 res.setHora_reserva(rs.getString("hora_reserva"));
                 res.setCantidad_menu(rs.getInt("cantidad_menu"));
                 res.setReserva_atendida(rs.getBoolean("reserva_atendida"));
+                Menu men = new Menu(res.getId_menu()).consultarMenuInd();
+                res.setMenu(men);
+                Cliente cli = new Cliente(res.getId_cedula()).consultarCliente();
+                res.setCliente(cli);
 
                 listaReserva.add(res);
             }
@@ -124,16 +146,18 @@ public class Reserva {
     
       public Reserva consultarReserva() {
         ConexionBD conexion = new ConexionBD();
-        String sql = "SELECT * FROM reserva WHERE id='" + this.id_reserva + "';";
+        String sql = "SELECT * FROM reserva WHERE id_reserva='" + this.id_reserva + "';";
         ResultSet rs = conexion.consultarBD(sql);
         try {
             if (rs.next()) {
                 this.id_cedula = rs.getString("id_cedula");
                 this.id_menu = Integer.parseInt(rs.getString("id_menu"));
-                this.dia_reserva = rs.getString("descripcion_menu");
+                this.dia_reserva = rs.getString("dia_reserva");
                 this.hora_reserva = rs.getString("hora_reserva");
                 this.cantidad_menu = Integer.parseInt(rs.getString("cantidad_menu"));
                 this.reserva_atendida = Boolean.parseBoolean(rs.getString("reserva_atendida"));
+                this.menu= new Menu(this.id_menu).consultarMenuInd();
+                this.cliente= new Cliente(this.id_cedula).consultarCliente();
             } else {
                 return null;
             }
