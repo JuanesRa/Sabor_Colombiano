@@ -126,7 +126,7 @@
                                 <td>{{c.cel_cliente}}</td>
                                 <td>{{c.correo}}</td>
                                 <td>
-                                    <button type="button" class="btn btn-info" ng-click="ac.editar(a.id)">Editar</button>
+                                    <button type="button" class="btn btn-info" ng-click="ac.editar(c.id_cedula)">Editar</button>
                                 </td>
                             </tr>
 
@@ -196,7 +196,7 @@
                     }).then(function (res) {
                         if (res.data.ok === true) {
                             if (res.data.actualizar) {
-                                alert("Guardó")
+                                alert("Guardó");
                             } else {
                                 alert("No guardo");
                             }
@@ -230,7 +230,7 @@
                     };
                     $http({
                         method: 'POST',
-                        url: 'peticionesMenu.jsp',
+                        url: 'peticionesCliente.jsp',
                         params: parametros
                     }).then(function (res) {
                         if (res.data.ok === true) {

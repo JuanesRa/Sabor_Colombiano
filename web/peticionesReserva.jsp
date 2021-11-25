@@ -63,10 +63,11 @@
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             //creación de objeto y llamado a método eliminar
-            String id_cedula = request.getParameter("id_cedula");
-            Reserva cli = new Reserva();
-            cli.setId_cedula(id_cedula);
-            if (cli.eliminarReserva()) {
+            int id_reserva = Integer.parseInt(request.getParameter("id_reserva"));
+            Reserva res = new Reserva();
+            res.setId_reserva(id_reserva);
+            
+            if (res.eliminarReserva()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
                 respuesta += "\"" + proceso + "\": false";

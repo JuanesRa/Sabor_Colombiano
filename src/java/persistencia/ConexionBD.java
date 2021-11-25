@@ -23,10 +23,10 @@ public class ConexionBD {
     public ConexionBD() {
         DB_driver = "com.mysql.cj.jdbc.Driver";
         host = "localhost:3306";
-        db = "bd_restaurante";
+        db = "c4bs7grupo4";
         url = "jdbc:mysql://" + host + "/" + db+"?serverTimezone=UTC"; 		//URL DB
-        username = "root";                      			//usuario base de datos global 
-        password = "misiontic";
+        username = "root";    //c4bs7grupo4                   			//usuario base de datos global 
+        password = "misiontic"; //ac2LsGjS
         try {
             //Asignacin del Driver
             Class.forName(DB_driver);

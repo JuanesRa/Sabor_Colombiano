@@ -241,9 +241,9 @@
                     }).then(function (res) {
                         if (res.data.ok === true) {//verificar si el proceso existe
                             if (res.data.eliminar === true) {//verifica el resultado de la transaccion
-                                alert('Guardó');
+                                alert('Eliminó');
                             } else {
-                                alert('No guardó');
+                                alert('No Eliminó');
                             }
                         } else {
                             alert(res.data.errorMsg);
@@ -262,7 +262,7 @@
                     }).then(function (res) {
                         rc.id_reserva = res.data.ReservaIndividual.id_reserva;
                         rc.id_cedula = res.data.ReservaIndividual.id_cedula;
-                        rc.id_menu = res.data.ReservaIndividual.menu.nombre_menu.toString;//seguir con el proceso
+                        rc.id_menu = res.data.ReservaIndividual.menu.id;//seguir con el proceso
                         rc.dia_reserva = res.data.ReservaIndividual.dia_reserva;
                         rc.hora_reserva = res.data.ReservaIndividual.hora_reserva;
                         rc.cantidad_menu = res.data.ReservaIndividual.cantidad_menu;

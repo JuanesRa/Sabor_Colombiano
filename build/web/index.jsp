@@ -16,7 +16,7 @@
         <title>Home</title>
     </head>
     <body>
-        <%--<jsp:include page="menu.jsp"/>--%>
+        <jsp:include page="barraPrincipal.jsp"/>
         <div class="container-fluid" ng-app="login" ng-controller="loginController as lc">
             <div class="row">
                 <div class="col-4"></div>
@@ -61,6 +61,7 @@
                         if (res.data.ok === true) {
                             if (res.data.iniciarSesion === true) {
                                 alert('Puede iniciar sesion');
+                                
                             } else {
                                 alert('No puede iniciar sesion');
                             }
