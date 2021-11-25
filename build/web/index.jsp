@@ -16,7 +16,7 @@
         <title>Home</title>
     </head>
     <body>
-        <jsp:include page="menuPublico.jsp"/>
+        <jsp:include page="barraPrincipal.jsp"/>
         <div class="container-fluid" ng-app="login" ng-controller="loginController as lc">
             <div class="row">
                 <div class="col-4"></div>
@@ -100,5 +100,5 @@
             </button>
         </div>
     </body>
-    <jsp:include page="footer.jsp"/>
+    <%--<jsp:include page="footer.jsp"/>--%>
 </html>
