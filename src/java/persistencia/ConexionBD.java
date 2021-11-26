@@ -26,7 +26,7 @@ public class ConexionBD {
         db = "bd_restaurante";
         url = "jdbc:mysql://" + host + "/" + db+"?serverTimezone=UTC"; 		//URL DB
         username = "root";                      			//usuario base de datos global 
-        password = "misiontic";
+        password = "MisionTic";
         try {
             //Asignacin del Driver
             Class.forName(DB_driver);
