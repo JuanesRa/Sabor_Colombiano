@@ -66,8 +66,11 @@ public class ConexionBD {
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = stmt.executeQuery(sentencia);
         } catch (SQLException sqlex) {
+            System.out.println(sqlex.getMessage());
         } catch (RuntimeException rex) {
+            System.out.println(rex.getMessage());
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 
         return rs;

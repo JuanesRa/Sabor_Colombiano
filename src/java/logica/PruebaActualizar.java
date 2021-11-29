@@ -34,7 +34,7 @@ public class PruebaActualizar {
         res.setId_reserva(5);
         res.setId_cedula("1022");
         res.setId_menu(3);
-        res.setDia_reserva("04-11-2021");
+//        res.setDia_reserva("04-11-2021");
         res.setHora_reserva("2:00 pm");
         res.setCantidad_menu(4);
         res.setReserva_atendida(false);

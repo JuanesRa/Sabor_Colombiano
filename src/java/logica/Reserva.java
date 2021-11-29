@@ -2,7 +2,9 @@ package logica;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import persistencia.ConexionBD;
 
@@ -11,28 +13,18 @@ public class Reserva {
     private int id_reserva;
     private String id_cedula;
     private int id_menu;
-    private String dia_reserva;
+    private Date dia_reserva;
     private String hora_reserva;
     private int cantidad_menu;
     private boolean reserva_atendida;
     private Menu menu;
     private Cliente cliente;
-
+    
     public Reserva() {
     }
 
     public Reserva(int id_reserva) {
         this.id_reserva = id_reserva;
-    }
-
-    public Reserva(int id_reserva, String id_cedula, int id_menu, String dia_reserva, String hora_reserva, int cantidad_menu, boolean reserva_atendida) {
-        this.id_reserva = id_reserva;
-        this.id_cedula = id_cedula;
-        this.id_menu = id_menu;
-        this.dia_reserva = dia_reserva;
-        this.hora_reserva = hora_reserva;
-        this.cantidad_menu = cantidad_menu;
-        this.reserva_atendida = reserva_atendida;
     }
 
     public Menu getMenu() {
@@ -75,18 +67,6 @@ public class Reserva {
         this.id_menu = id_menu;
     }
 
-    public String getDia_reserva() {
-        return dia_reserva;
-    }
-
-    public void setDia_reserva(String dia_reserva) {
-        this.dia_reserva = dia_reserva;
-    }
-
-    public String getHora_reserva() {
-        return hora_reserva;
-    }
-
     public void setHora_reserva(String hora_reserva) {
         this.hora_reserva = hora_reserva;
     }
@@ -107,6 +87,14 @@ public class Reserva {
         this.reserva_atendida = reserva_atendida;
     }
 
+    public Date getDia_reserva() {
+        return dia_reserva;
+    }
+
+    public void setDia_reserva(Date dia_reserva) {
+        this.dia_reserva = dia_reserva;
+    }
+
     @Override
     public String toString() {
         return "Reserva{" + "id_reserva=" + id_reserva + ", id_cedula=" + id_cedula + ", id_menu=" + id_menu + ", dia_reserva=" + dia_reserva + ", hora_reserva=" + hora_reserva + ", cantidad_menu=" + cantidad_menu + ", reserva_atendida=" + reserva_atendida + '}';
@@ -125,15 +113,13 @@ public class Reserva {
                 res.setId_reserva(rs.getInt("id_reserva"));
                 res.setId_cedula(rs.getString("id_cedula"));
                 res.setId_menu(rs.getInt("id_menu"));
-                res.setDia_reserva(rs.getString("dia_reserva"));
-                res.setHora_reserva(rs.getString("hora_reserva"));
+                res.setDia_reserva(rs.getTimestamp("dia_reserva"));
                 res.setCantidad_menu(rs.getInt("cantidad_menu"));
                 res.setReserva_atendida(rs.getBoolean("reserva_atendida"));
                 Menu men = new Menu(res.getId_menu()).consultarMenuInd();
                 res.setMenu(men);
                 Cliente cli = new Cliente(res.getId_cedula()).consultarCliente();
                 res.setCliente(cli);
-
                 listaReserva.add(res);
             }
         } catch (SQLException ex) {
@@ -152,7 +138,7 @@ public class Reserva {
             if (rs.next()) {
                 this.id_cedula = rs.getString("id_cedula");
                 this.id_menu = Integer.parseInt(rs.getString("id_menu"));
-                this.dia_reserva = rs.getString("dia_reserva");
+                this.dia_reserva = rs.getDate("dia_reserva");
                 this.hora_reserva = rs.getString("hora_reserva");
                 this.cantidad_menu = Integer.parseInt(rs.getString("cantidad_menu"));
                 this.reserva_atendida = Boolean.parseBoolean(rs.getString("reserva_atendida"));
@@ -171,10 +157,11 @@ public class Reserva {
 
     public boolean guardarReserva() {
         ConexionBD conexion = new ConexionBD();
+        java.sql.Timestamp fecha=new Timestamp(this.dia_reserva.getTime());
         String sql = "INSERT INTO reserva\n"
-                + "(id_cedula, id_menu, dia_reserva, hora_reserva, cantidad_menu, reserva_atendida)\n"
-                + "VALUES('" + this.id_cedula + "', " + this.id_menu + ", '" + this.dia_reserva + "', '"
-                + this.hora_reserva + "', " + this.cantidad_menu + ", " + this.reserva_atendida + ");";
+                + "(id_cedula, id_menu, dia_reserva, cantidad_menu, reserva_atendida)\n"
+                + "VALUES('" + this.id_cedula + "', " + this.id_menu + ", '" +fecha + 
+                "', " + this.cantidad_menu + ", " + this.reserva_atendida + ");";
 
         if (conexion.setAutoCommitBD(false)) {
             if (conexion.insertarBD(sql)) {

@@ -16,7 +16,7 @@
         <style>
             /*div{ border: dotted;}*/
         </style>
-        <title>Resgistrarse</title>
+        <title>Registrarse</title>
     </head>
     <body>
         <jsp:include page="barraPrincipal.jsp"/>
@@ -114,8 +114,35 @@
             app.controller('clienteController', ['$http', controladorCliente]);
             function controladorCliente($http) {
                 var cc = this;
+                validarContrasena= function(){
+                  if(cc.contrasena===cc.contrasena2){
+                      return true;
+                  }else{
+                      return false;
+                  }                 
+                };
+                validar= function(tipoDeValidacion){
+                    var id_cedula=cc.id_cedula?true:false;
+                    var nom_cliente=cc.nom_cliente?true:false;
+                    var apel_cliente=cc.apel_cliente?true:false;
+                    var dir_cliente=cc.dir_cliente?true:false;
+                    var cel_cliente=cc.cel_cliente?true:false;
+                    var correo=cc.correo?true:false;
+                    var contrasena=cc.contrasena?true:false;
+                    var contrasena2=cc.contrasena2?true:false;                    
+                    
+                    if(tipoDeValidacion==='todosLosCampos'){
+                        if(id_cedula&&nom_cliente&&apel_cliente&&dir_cliente&&cel_cliente&&correo&&contrasena&&contrasena2){
+                            return true;
+                        }else{
+                            return false;
+                        }                        
+                    }
+                };
+                
                 cc.guardar = function () {
-                    var parametros = {
+                    if(validar('todosLosCampos')&&validarContrasena()){
+                        var parametros = {
                         proceso: 'guardar',
                         id_cedula: cc.id_cedula,
                         nom_cliente: cc.nom_cliente,
@@ -132,6 +159,7 @@
                         params: parametros
                     }).then(function (res) {
                         if (res.data.ok === true) {//verificar si el proceso existe
+                            
                             if (res.data.guardar === true) {//verifica el resultado de la transaccion
                                 alert('Guardó');
                             } else {
@@ -140,9 +168,12 @@
                         } else {
                             alert(res.data.errorMsg);
                         }
-                    });
+                    });                        
+                    }else{
+                        alert("Todos los campos son obligatorios");
+                        alert("Las contraseñas no coinciden");
+                    }                    
                 };
-               
             }
 
         </script>

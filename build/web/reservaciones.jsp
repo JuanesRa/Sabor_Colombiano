@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-6"> 
                             <label>Dia Reserva</label>
-                            <input type="date" class="form-control" placeholder="dia reserva" ng-model="rc.dia_reserva">
+                            <input type="datetime-local" class="form-control" placeholder="dia reserva" ng-model="rc.dia_reserva">
                         </div>
                         <div class="col-6"> 
                             <label>Hora Reserva</label>
@@ -132,7 +132,8 @@
                                 <td>{{r.cliente.nom_cliente}}</td>
                                 <td>{{r.menu.nombre_menu}}</td>
                                 <td>{{r.dia_reserva}}</td>
-                                <td>{{r.hora_reserva}}</td>
+                                <!--<td>{{r.hora_reserva}}</td>-->
+                                <td>{{r.hora|date:'HH:mm'}}</td>
                                 <td>{{r.cantidad_menu}}</td>
                                 <td>{{r.reserva_atendida}}</td>              
                                 <td>
@@ -150,17 +151,17 @@
             app.controller('reservacionesController', ['$http', controlReservaciones]);
             function controlReservaciones($http) {
                 var rc = this;
-                
-                consultarMenus = function(){
-                    var parametros={
+
+                consultarMenus = function () {
+                    var parametros = {
                         proceso: 'listar'
                     };
                     $http({
                         method: 'POST',
                         url: 'peticionesMenu.jsp',
-                        params:parametros
-                    }).then(function(res){
-                        rc.Menus=res.data.Menu;
+                        params: parametros
+                    }).then(function (res) {
+                        rc.Menus = res.data.Menu;
                     });
                 };
                 consultarMenus();
@@ -177,12 +178,15 @@
                     });
                 };
                 rc.guardar = function () {
+                    var f = rc.dia_reserva;
+//                    var h = rc.hora_reserva;
                     var parametros = {
                         proceso: 'guardar',
                         id_cedula: rc.id_cedula,
                         id_menu: rc.id_menu,
-                        dia_reserva: rc.dia_reserva,
-                        hora_reserva: rc.hora_reserva,
+                        dia_reserva: f.getTime(),
+//                        dia_reserva: f.getDate() + '-' + f.getMonth() + '-' + f.getFullYear(),
+//                        hora_reserva: h.getHours() + ':' + h.getMinutes(),
                         cantidad_menu: rc.cantidad_menu,
                         reserva_atendida: rc.reserva_atendida
                     };
@@ -203,13 +207,15 @@
                     });
                 };
                 rc.actualizar = function () {
+                    var f = rc.dia_reserva;
+                    var h = rc.hora_reserva;
                     var parametros = {
                         proceso: 'actualizar',
                         id_reserva: rc.id_reserva,
                         id_cedula: rc.id_cedula,
                         id_menu: rc.id_menu,
-                        dia_reserva: rc.dia_reserva,
-                        hora_reserva: rc.hora_reserva,
+                        dia_reserva: f.getDate() + '-' + f.getMonth() + '-' + f.getFullYear(),
+                        hora_reserva: h.getHours() + ':' + h.getMinutes(),
                         cantidad_menu: rc.cantidad_menu,
                         reserva_atendida: rc.reserva_atendida
                     };
@@ -260,13 +266,30 @@
                         url: 'peticionesReserva.jsp',
                         params: parametros
                     }).then(function (res) {
+                        var r = res.data.ReservaIndividual;
+                        var h = res.data.ReservaIndividual.hora_reserva;
+                        var f = res.data.ReservaIndividual.dia_reserva;
+
+                        var vFecha = f.split('-');
+                        var vHora = h.split(':');
+
+                        var fechaColocar = new Date();
+                        var horaColocar = new Date();
+                        fechaColocar.setDate(vFecha[0]);
+                        fechaColocar.setMonth(vFecha[1]);
+                        fechaColocar.setFullYear(vFecha[2]);
+                        horaColocar.setHours(vHora[0]);
+                        horaColocar.setMinutes(vHora[1]);
+                        horaColocar.setSeconds(0);
+                        horaColocar.setMilliseconds(0);
+
                         rc.id_reserva = res.data.ReservaIndividual.id_reserva;
                         rc.id_cedula = res.data.ReservaIndividual.id_cedula;
-                        rc.id_menu = res.data.ReservaIndividual.menu.id;//seguir con el proceso
-                        rc.dia_reserva = res.data.ReservaIndividual.dia_reserva;
-                        rc.hora_reserva = res.data.ReservaIndividual.hora_reserva;
+                        rc.id_menu = res.data.ReservaIndividual.menu.id.toString();//seguir con el proceso
+                        rc.dia_reserva = fechaColocar;
+                        rc.hora_reserva = horaColocar;
                         rc.cantidad_menu = res.data.ReservaIndividual.cantidad_menu;
-                        rc.reserva_atendida= res.data.ReservaIndividual.reserva_atendida;
+                        rc.reserva_atendida = res.data.ReservaIndividual.reserva_atendida;
                     });
                 };
 

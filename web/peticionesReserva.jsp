@@ -5,6 +5,8 @@
 --%>
 
 
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.util.Date"%>
 <%@page import="logica.Reserva"%>
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.logging.Level"%>
@@ -40,19 +42,20 @@
             // creación de objeto y llamado a método guardar
             String id_cedula = request.getParameter("id_cedula");
             int id_menu = Integer.parseInt(request.getParameter("id_menu"));
-            String dia_reserva = request.getParameter("dia_reserva");
-            String hora_reserva = request.getParameter("hora_reserva");
+            long dia = Long.parseLong(request.getParameter("dia_reserva"));
+            Date dia_reserva = new Date(dia);
+//            String hora_reserva = request.getParameter("hora_reserva");
             int cantidad_menu = Integer.parseInt(request.getParameter("cantidad_menu"));
             boolean reserva_atendida = Boolean.parseBoolean(request.getParameter("reserva_atendida"));
-           
+
             Reserva res = new Reserva();
             res.setId_cedula(id_cedula);
             res.setId_menu(id_menu);
-            res.setDia_reserva(dia_reserva);
-            res.setHora_reserva(hora_reserva);
+//            res.setHora_reserva(hora_reserva);
             res.setCantidad_menu(cantidad_menu);
             res.setReserva_atendida(reserva_atendida);
-            
+            res.setDia_reserva(dia_reserva);
+
             if (res.guardarReserva()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
@@ -66,7 +69,7 @@
             int id_reserva = Integer.parseInt(request.getParameter("id_reserva"));
             Reserva res = new Reserva();
             res.setId_reserva(id_reserva);
-            
+
             if (res.eliminarReserva()) {
                 respuesta += "\"" + proceso + "\": true";
             } else {
@@ -84,13 +87,13 @@
                 respuesta += "\"" + proceso + "\": true,\"Reservas\":[]";
                 Logger.getLogger(Reserva.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (proceso.equals("consultarIndividual")) {
+        } else if (proceso.equals("consultarIndividual")) {
             //Solicitud de parámetros enviados desde el frontned
             //, uso de request.getParameter("nombre parametro")
             //creación de objeto y llamado al metodo consultarIndividual
             int id_reserva = Integer.parseInt(request.getParameter("id_reserva"));
             try {
-                Reserva obj =new Reserva(id_reserva).consultarReserva();
+                Reserva obj = new Reserva(id_reserva).consultarReserva();
                 respuesta += "\"" + proceso + "\": true,\"ReservaIndividual\":" + new Gson().toJson(obj);
             } catch (Exception ex) {
                 respuesta += "\"" + proceso + "\": true,\"ReservaIndividual\":null";
@@ -101,17 +104,16 @@
             int id_reserva = Integer.parseInt(request.getParameter("id_reserva"));
             String id_cedula = request.getParameter("id_cedula");
             int id_menu = Integer.parseInt(request.getParameter("id_menu"));
-            String dia_reserva = request.getParameter("dia_reserva");
-            String hora_reserva = request.getParameter("hora_reserva");
+            String dia = request.getParameter("dia_reserva");
+            Date dia_reserva = new Date(dia);
             int cantidad_menu = Integer.parseInt(request.getParameter("cantidad_menu"));
             boolean reserva_atendida = Boolean.parseBoolean(request.getParameter("reserva_atendida"));
-           
+
             Reserva res = new Reserva();
             res.setId_reserva(id_reserva);
             res.setId_cedula(id_cedula);
             res.setId_menu(id_menu);
             res.setDia_reserva(dia_reserva);
-            res.setHora_reserva(hora_reserva);
             res.setCantidad_menu(cantidad_menu);
             res.setReserva_atendida(reserva_atendida);
             if (res.actualizarReserva()) {
